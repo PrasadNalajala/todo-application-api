@@ -58,8 +58,79 @@ app.get("/agenda/", async (req, res) => {
     SELECT id,todo,priority,status,category,due_date as dueDate FROM
   todo
   WHERE
-  due_date=${updatedDate} `;
+  due_date='${updatedDate}' `;
   console.log(query);
   const data = await db.all(query);
   res.send(data);
 });
+
+app.post("/todos/", async (request, response) => {
+  const { id, todo, priority, status, category, dueDate } = request.body;
+  const query = `
+  INSERT INTO todo(id,todo,priority,status,category,due_date)
+  values(${id},'${todo}','${priority}','${status}','${category}','${dueDate}')
+  `;
+  const data = await db.run(query);
+  response.send("Todo Successfully Added");
+});
+
+app.put("/todos/:todoId/", async (req, res) => {
+  const {
+    status = "",
+    priority = "",
+    todo = "",
+    category = "",
+    duDate = "",
+  } = req.body;
+  const { todoId } = req.params;
+  if (status !== "") {
+    const query = `
+        UPDATE todo
+        SET
+        status='${status}'
+        WHERE
+        id=${todoId}`;
+    await db.run(query);
+    res.send("Status Updated");
+  } else if (priority !== "") {
+    const query = `
+        UPDATE todo
+        SET
+        priority='${priority}'
+        WHERE
+        id=${todoId}`;
+    await db.run(query);
+    res.send("Priority Updated");
+  } else if (todo !== "") {
+    const query = `
+        UPDATE todo
+        SET
+        todo='${todo}'
+        WHERE
+        id=${todoId}`;
+    await db.run(query);
+    res.send("Todo Updated");
+  } else if (category !== "") {
+    const query = `
+        UPDATE todo
+        SET
+        category='${category}'
+        WHERE
+        id=${todoId}`;
+    await db.run(query);
+    res.send("Category Updated");
+  }
+});
+
+app.delete("/todos/:todoId", async (req, res) => {
+  const { todoId } = req.params;
+  const query = `
+    DELETE FROM
+    todo
+    WHERE
+    id=${todoId}`;
+  await db.run(query);
+  res.send("Todo Deleted");
+});
+
+module.exports = app;
