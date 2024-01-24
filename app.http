@@ -1,0 +1,4 @@
+get http://localhost:3000/todos/?priority=HIGH
+
+###
+get http://localhost:3000/todos/3
