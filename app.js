@@ -7,6 +7,7 @@ const path = require("path");
 const dbPath = path.join(__dirname, "todoApplication.db");
 let db;
 
+
 const initializeDb = async () => {
   db = await open({
     filename: dbPath,
