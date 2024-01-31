@@ -17,6 +17,7 @@ const initializeDb = async () => {
 };
 initializeDb();
 
+
 app.get("/todos/", async (request, response) => {
   const {
     status = "",
