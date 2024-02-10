@@ -54,6 +54,7 @@ FROM
 });
 app.use(express.json());
 
+
 app.get("/agenda/", async (req, res) => {
   const { date } = req.query;
   const parsedDate = parseISO(date);
